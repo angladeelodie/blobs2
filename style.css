@@ -1,0 +1,70 @@
+body,
+.bgImage {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.bgImage {
+  position: absolute;
+  /* background-image: url(https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?ixlib=rb-0.3.5&s=e20bc3d490c974d9ea190e05c47962f5&auto=format&fit=crop&w=634&q=80); */
+  background-color: rgb(224, 224, 224);
+  background-size: cover;
+  background-position: top;
+  -webkit-filter: grayscale(70%);
+  /* Safari 6.0 - 9.0 */
+  filter: grayscale(70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.blobCont {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
+
+circle{
+  fill: url(#MyGradient);
+}
+
+circle {
+  transition: all 1s ease-in-out;
+}
+
+
+.blob:nth-child(1) {
+  animation: move1 20s infinite linear;
+}
+
+/* @keyframes move1 {
+  from {
+    transform: rotate(90deg) translate(200px, 0.1px) rotate(-90deg);
+  }
+  to {
+    transform: rotate(450deg) translate(200px, 0.1px) rotate(-450deg);
+  }
+} */
+
+#color1 {
+  stop-color: rgb(166, 182, 192);
+  
+}
+#color2 {
+  stop-color: rgb(233, 233, 233);
+}
+#color3 {
+  stop-color: rgb(166, 182, 192);
+}
+
+svg {
+  pointer-events: none;
+}
+svg circle{
+  pointer-events: all;
+}
+
+svg circle:hover{
+cursor: grab;
+}
