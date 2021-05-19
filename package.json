@@ -1,0 +1,66 @@
+{
+  "name": "DiscordMonday",
+  "version": "1.0.0",
+  "description": "",
+  "main": "JS/main.js",
+  "dependencies": {
+    "@georgedoescode/spline": "^1.0.1",
+    "chart.js": "^3.1.0",
+    "chartjs-plugin-datalabels": "^1.0.0",
+    "discord.js": "^12.5.1",
+    "electron": "^12.0.8",
+    "electron-squirrel-startup": "^1.0.0",
+    "esm": "^3.2.25",
+    "johnny-five": "^2.0.0",
+    "node-abi": "^2.20.0",
+    "robotjs": "^0.6.0",
+    "serialport": "^9.0.7",
+    "simplex-noise": "^2.4.0",
+    "update": "^0.7.4"
+  },
+  "devDependencies": {
+    "electron": "^12.0.8",
+    "@electron-forge/cli": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
+    "electron-rebuild": "^2.3.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "DiscordMonday"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  }
+}
