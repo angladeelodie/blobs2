@@ -12,7 +12,7 @@ function createWindow() {
             contextIsolation: false,
         },
     });
-    win.loadFile("index2.html");
+    win.loadFile("index.html");
 }
 
 function initBot() {

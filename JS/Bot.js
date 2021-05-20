@@ -26,6 +26,7 @@ class Bot {
     console.log("Board ready");
   
   }
+ 
 
   onReady() {
     console.log("BOT READY");
