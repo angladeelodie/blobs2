@@ -17,7 +17,7 @@ var noiseStep = 0.005;
 var newMessage = false;
 var index = 0;
 var point;
-var rad = 75;
+var rad = 50;
 var numPoints = 5;
 // used to equally space each point around the circle
 var angleStep = (Math.PI * 2) / numPoints;
@@ -51,7 +51,7 @@ class App {
 
     // the radius of the circle
 
-    for (let i = 1; i <= numPoints; i++) {
+    for (let i = 0; i <= numPoints-1; i++) {
       // this.points = [];
       // x & y coordinates of the current point
       const theta = i * angleStep;
@@ -101,7 +101,7 @@ class App {
 
   updatePoints() {
     this.points = [];
-    for (let i = 1; i <= numPoints; i++) {
+    for (let i = 0; i <= numPoints-1; i++) {
       const theta = i * angleStep;
       var x = 100 + Math.cos(theta) * rad;
       var y = 100 + Math.sin(theta) * rad;
@@ -152,10 +152,9 @@ class App {
       point.noiseOffsetY += noiseStep;
       // }
       if (newMessage == true) {
-        rad = 100;
 
         noiseStep = 0.001;
-        point = this.points[index - 1];
+        point = this.points[index];
 
         // return a pseudo random value between -1 / 1 based on this point's current x, y positions in "time"
         const nX = this.noise(point.noiseOffsetX, point.noiseOffsetX);
@@ -198,6 +197,86 @@ class App {
   }
 
   onMessage(event, message) {
+    const fearJson = "./JS/Dictionnary/fear.json";
+    const fear = require(fearJson);
+    
+    const angerJson = "./JS/Dictionnary/anger.json";
+    const anger = require(angerJson);
+    
+    const loveJson = "./JS/Dictionnary/love.json";
+    const love = require(loveJson);
+
+    const sadJson = "./JS/Dictionnary/sad.json";
+    const sad = require(sadJson);
+
+    const happyJson = "./JS/Dictionnary/happy.json";
+    const happy = require(happyJson);
+
+    const emotions = [happy, fear, anger, love, sad];
+    console.log(emotions);
+    var points;
+    var emotionIndex;
+
+    console.log(message)
+
+    for (let i = 0; i < emotions.length; i++) {
+      if (emotions[i].hasOwnProperty(message.content)) {
+        //récupérer les points attribués au mot-clé
+        points = emotions[i][message.content];
+        emotionIndex = i;
+        // i = 0 -> fear // i = 1 -> anger // i = 2 -> love...
+        console.log(emotionIndex);
+        console.log(points);
+
+        //changer valeurs du blobs selon l'emotion
+
+        index = emotionIndex;
+        console.log(index);
+        newMessage = true;
+        rad = rad + 10;
+        this.updatePoints();
+
+      $(".stats").append('<div class="singleStat">			<div class="statTitle">				<div class="emotionStat">					<span class="material-icons">						north_east					</span>					<div class="emotionName">anger</div>				</div>				<div class="userName">matthater</div>				<div class="messageTime">22:03</div>			</div>			<div class="statContent">				<div class="statMessage">					I wanna punch someone because I had a shitty day				</div>			</div>		</div>');
+      var emotionText;
+      if(emotionIndex == 1){
+        emotionText = "fear"
+      }  if(emotionIndex == 2){
+        emotionText = "anger"
+      }  if(emotionIndex == 3){
+        emotionText = "love"
+      }  if(emotionIndex == 4){
+        emotionText = "sad"
+      }
+       if(emotionIndex == 0){
+        emotionText = "happy"
+      }
+      console.log(emotionText + " " + emotionIndex)      
+      
+      const d = new Date(message.timestamp);
+      var singleStat = $(".singleStat").last();
+      var date = d.getHours() + ":" +d.getMinutes();
+      $(".messageTime").last().text(date);  
+
+      $(".userName").last().text(message.author);  
+      $(".statMessage").last().text(message.content);
+      $(".emotionName").last().text(emotionText); 
+    
+      var statsDiv = $(".stats").last()
+      statsDiv.animate({ scrollTop: statsDiv[0].scrollHeight}, 1000);
+      
+      //let anchorLinkPos = singleStat.getBoundingClientRect().top + window.scrollY-(window.innerHeight/10)+12 ;
+      //console.log(anchorLinkPos);
+        // window.scroll({
+        // top:  anchorLinkPos,
+        // behavior: 'smooth'
+        // });
+        
+
+
+
+
+      }
+    }
 
   }
 
@@ -213,25 +292,40 @@ class App {
 
 
 window.onload = () => {
-  var yolo = new App();
+  var app = new App();
 
   $(".pointDiv").click(function () {
-    index = $(this).attr("index");
-    newMessage = true;
-    yolo.updatePoints();
+    // index = $(this).attr("index");
+    // console.log(index);
+    // newMessage = true;
+    // rad = rad + 5;
+    // yolo.updatePoints();
+
+    //$(".stats").append('<div class="statTitle"><div class="emotionStat"><span class="material-icons">north_east</span><div>happy</div></div><div class="userName">melanief</div><div class="">22:03</div></div><div class="statContent"><div class="statMessage">I had the best day ever!!</div></div>');
   });
 
 
 
   $('input[type="checkbox"]').click(function () {
     $(".pointDiv").toggleClass("invisible");
-    $(".stats").toggleClass("invisible")
+    $(".stats").toggleClass("invisible");
 
   });
 
-  $(".statTitle").hover(function () {
-    $(this).next().toggleClass("appearMsg");
+  $("#resetButton").click(function(){
+    newMessage =false;
+    rad = 75;
+    app.updatePoints();
   });
+
+  
+  // $(".statTitle").hover(function () {
+  //   console.log("was hovered")
+  //   $(this).next().toggleClass("appearMsg");
+  // });
+
+
+ 
 
 };
 
@@ -245,4 +339,23 @@ window.onload = () => {
 
 // document.querySelector('path').addEventListener('mouseleave', () => {
 //   noiseStep = 0.005;
+// });
+
+$(document).on("mouseenter", ".statTitle", function() {
+  $(this).next().toggleClass("appearMsg");
+  var statsDiv = $(".stats").last()
+  statsDiv.animate({ scrollTop: statsDiv[0].scrollHeight}, 1000);
+ });
+
+ $(document).on("mouseleave", ".statTitle", function() {
+  $(this).next().toggleClass("appearMsg");
+ });
+
+// $('.statTitle').on({
+//   mouseenter: function () {
+//     $(this).next().toggleClass("appearMsg");
+//   },
+//   mouseleave: function () {
+//     $(this).next().toggleClass("appearMsg");
+//   }    
 // });
